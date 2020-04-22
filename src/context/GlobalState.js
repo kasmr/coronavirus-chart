@@ -9,7 +9,6 @@ const initialState = {
   countries: null,
   currentCountry: null,
   globalDailyData: null,
-  isChosen: false,
   loading: false,
 };
 
@@ -82,7 +81,6 @@ export const GlobalProvider = ({ children }) => {
         loading: state.loading,
         countries: state.countries,
         currentCountry: state.currentCountry,
-        isChosen: state.isChosen,
         globalDailyData: state.globalDailyData,
         fetchData,
         fetchCountries,

@@ -16,7 +16,6 @@ const Cards = () => {
     loading,
     data: { confirmed, recovered, deaths, lastUpdate },
     currentCountry,
-    isChosen,
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const Cards = () => {
     return <Loader />;
   }
 
-  if (isChosen) {
+  if (currentCountry) {
     const { confirmed, recovered, deaths, lastUpdate } = currentCountry;
 
     return (
