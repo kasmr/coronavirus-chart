@@ -36,5 +36,11 @@ const useStyles = makeStyles((theme) => ({
     width: 1000,
     display: 'flex',
     margin: '1rem auto',
+    [theme.breakpoints.down('md')]: {
+      width: 800,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 380,
+    },
   },
 }));

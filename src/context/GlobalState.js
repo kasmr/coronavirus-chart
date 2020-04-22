@@ -5,6 +5,8 @@ import axios from 'axios';
 const initialState = {
   data: [],
   countries: null,
+  currentCountry: null,
+  isChosen: false,
   loading: false,
 };
 
@@ -49,15 +51,26 @@ export const GlobalProvider = ({ children }) => {
     dispatch({ type: 'GET_COUNTRIES', payload: countries });
   };
 
+  //Fetching current country
+
+  const fetchCountry = async (country) => {
+    const { data } = await axios.get(`${url}/countries/${country}`);
+
+    dispatch({ type: 'GET_COUNTRY', payload: data });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
         data: state.data,
         loading: state.loading,
         countries: state.countries,
+        currentCountry: state.currentCountry,
+        isChosen: state.isChosen,
         fetchData,
         fetchCountries,
         setLoading,
+        fetchCountry,
       }}
     >
       {children}

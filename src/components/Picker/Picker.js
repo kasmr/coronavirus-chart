@@ -7,11 +7,14 @@ import { NativeSelect } from '@material-ui/core';
 
 const Picker = () => {
   const classes = useStyles();
-  const { countries, fetchCountries } = useContext(GlobalContext);
+  const { countries, fetchCountries, fetchCountry } = useContext(GlobalContext);
   const [country, setCountry] = useState('');
 
   useEffect(() => {
     fetchCountries();
+    if (country) {
+      fetchCountry(country);
+    }
   }, [country]);
 
   const handleChange = (event) => {
@@ -25,7 +28,7 @@ const Picker = () => {
         <NativeSelect value={country} onChange={handleChange}>
           {countries &&
             countries.map((item) => (
-              <option key={item.name} value={item.name}>
+              <option key={item.name} value={item.iso3}>
                 {item.name}
               </option>
             ))}

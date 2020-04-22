@@ -14,6 +14,8 @@ const Cards = () => {
     fetchData,
     loading,
     data: { confirmed, recovered, deaths, lastUpdate },
+    currentCountry,
+    isChosen,
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -24,74 +26,147 @@ const Cards = () => {
   if (!confirmed || loading) {
     return 'Загрузка...';
   }
+  console.log(isChosen);
 
-  return (
-    <div className={classes.container}>
-      <Card className={clsx(classes.root, classes.infected)}>
-        <CardContent>
-          <Typography
-            className={classes.title}
-            color='textSecondary'
-            gutterBottom
-            align='center'
-          >
-            Подтверждено
-          </Typography>
-          <Typography variant='h4' component='h2' align='center' gutterBottom>
-            <CountUp start={0} end={confirmed.value} separator=',' />
-          </Typography>
-          <Typography className={classes.pos} color='textSecondary'>
-            {new Date(lastUpdate).toDateString()}
-          </Typography>
-          <Typography variant='body2' component='p'>
-            Количество людей инфицированных Коронавирусом
-          </Typography>
-        </CardContent>
-      </Card>
-      <Card className={clsx(classes.root, classes.healed)}>
-        <CardContent>
-          <Typography
-            className={classes.title}
-            color='textSecondary'
-            gutterBottom
-            align='center'
-          >
-            Выздоровело
-          </Typography>
-          <Typography variant='h4' component='h2' align='center' gutterBottom>
-            <CountUp start={0} end={recovered.value} separator=',' />
-          </Typography>
-          <Typography className={classes.pos} color='textSecondary'>
-            {new Date(lastUpdate).toDateString()}
-          </Typography>
-          <Typography variant='body2' component='p'>
-            Количество людей, которое выздоровело{' '}
-          </Typography>
-        </CardContent>
-      </Card>
-      <Card className={clsx(classes.root, classes.dead)}>
-        <CardContent>
-          <Typography
-            className={classes.title}
-            color='textSecondary'
-            gutterBottom
-            align='center'
-          >
-            Летальные исходы
-          </Typography>
-          <Typography variant='h4' component='h2' align='center' gutterBottom>
-            <CountUp start={0} end={deaths.value} separator=',' />
-          </Typography>
-          <Typography className={classes.pos} color='textSecondary'>
-            {new Date(lastUpdate).toDateString()}
-          </Typography>
-          <Typography variant='body2' component='p'>
-            Количество летальных исходов из-за Коронавируса
-          </Typography>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  if (isChosen) {
+    const { confirmed, recovered, deaths, lastUpdate } = currentCountry;
+
+    return (
+      <div className={classes.container}>
+        <Card className={clsx(classes.root, classes.infected)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Подтверждено
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={confirmed.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество людей инфицированных Коронавирусом
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={clsx(classes.root, classes.healed)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Выздоровело
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={recovered.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество людей, которое выздоровело{' '}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={clsx(classes.root, classes.dead)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Летальные исходы
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={deaths.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество летальных исходов из-за Коронавируса
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  } else {
+    return (
+      <div className={classes.container}>
+        <Card className={clsx(classes.root, classes.infected)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Подтверждено
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={confirmed.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество людей инфицированных Коронавирусом
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={clsx(classes.root, classes.healed)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Выздоровело
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={recovered.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество людей, которое выздоровело{' '}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card className={clsx(classes.root, classes.dead)}>
+          <CardContent>
+            <Typography
+              className={classes.title}
+              color='textSecondary'
+              gutterBottom
+              align='center'
+            >
+              Летальные исходы
+            </Typography>
+            <Typography variant='h4' component='h2' align='center' gutterBottom>
+              <CountUp start={0} end={deaths.value} separator=',' />
+            </Typography>
+            <Typography className={classes.pos} color='textSecondary'>
+              {new Date(lastUpdate).toDateString()}
+            </Typography>
+            <Typography variant='body2' component='p'>
+              Количество летальных исходов из-за Коронавируса
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 };
 
 export default Cards;
