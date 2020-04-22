@@ -26,7 +26,6 @@ const Cards = () => {
   if (!confirmed || loading) {
     return 'Загрузка...';
   }
-  console.log(isChosen);
 
   if (isChosen) {
     const { confirmed, recovered, deaths, lastUpdate } = currentCountry;

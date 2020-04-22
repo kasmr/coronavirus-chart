@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Doughnut } from 'react-chartjs-2';
+import { GlobalContext } from '../../context/GlobalState';
 
 const Chart = () => {
   const classes = useStyles();
+
+  const { currentCountry } = useContext(GlobalContext);
+
+  if (!currentCountry) {
+    return 'Загрузка...';
+  }
+
+  const { confirmed, deaths, recovered } = currentCountry;
+
   const data = {
     labels: ['Подтверждено', 'Выздоровело', 'Летальные исходы'],
     datasets: [
       {
         label: 'On today',
-        data: [10000, 1000, 5000],
+        data: [confirmed.value, recovered.value, deaths.value],
         backgroundColor: ['#3d6cb9', '#0b8457', '#c03546'],
       },
     ],

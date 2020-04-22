@@ -15,6 +15,7 @@ const Picker = () => {
     if (country) {
       fetchCountry(country);
     }
+    //eslint-disable-next-line
   }, [country]);
 
   const handleChange = (event) => {
@@ -26,6 +27,7 @@ const Picker = () => {
       <FormControl className={classes.formControl}>
         <InputLabel shrink>Страна</InputLabel>
         <NativeSelect value={country} onChange={handleChange}>
+          <option>Global</option>
           {countries &&
             countries.map((item) => (
               <option key={item.name} value={item.iso3}>

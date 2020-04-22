@@ -5,6 +5,7 @@ export default (state, action) => {
         ...state,
         data: action.payload,
         loading: false,
+        isChosen: false,
       };
     case 'GET_COUNTRIES':
       return {
