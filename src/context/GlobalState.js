@@ -34,7 +34,6 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchData = async () => {
     setLoading();
-
     const {
       data: { confirmed, recovered, deaths, lastUpdate },
     } = await axios.get(url);

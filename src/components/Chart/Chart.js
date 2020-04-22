@@ -6,29 +6,13 @@ import { GlobalContext } from '../../context/GlobalState';
 const Chart = () => {
   const classes = useStyles();
 
-  const { currentCountry, isChosen, globalDailyData } = useContext(
-    GlobalContext
-  );
+  const { currentCountry, globalDailyData } = useContext(GlobalContext);
 
-  const globalData = {
-    labels: globalDailyData && globalDailyData.map(({ date }) => date),
-    datasets: [
-      {
-        label: 'Подтверждено',
-        data:
-          globalDailyData && globalDailyData.map(({ confirmed }) => confirmed),
-        backgroundColor: 'rgba(61, 108, 185, 0.2)',
-        borderColor: 'rgba(0, 0, 0, 0.5)',
-        pointBackgroundColor: 'white',
-      },
-      {
-        label: 'Летальных исхожов',
-        data: globalDailyData && globalDailyData.map(({ deaths }) => deaths),
-        backgroundColor: 'rgba(199, 00, 00, 1)',
-        borderColor: 'rgba(0, 0, 0, 0.5)',
-        pointBackgroundColor: 'white',
-      },
-    ],
+  const options = {
+    title: {
+      display: true,
+      text: 'Диаграмма страны',
+    },
   };
 
   const globalOptions = {
@@ -39,46 +23,59 @@ const Chart = () => {
     },
   };
 
-  if (!currentCountry || !isChosen) {
-    return (
-      <div className={classes.root}>
-        <Line data={globalData} options={globalOptions} />
-      </div>
-    );
-  }
-
-  const { confirmed, deaths, recovered } = currentCountry;
-
-  const data = {
-    labels: ['Подтверждено', 'Выздоровело', 'Летальные исходы'],
-    datasets: [
-      {
-        label: 'On today',
-        data: [confirmed.value, recovered.value, deaths.value],
-        backgroundColor: ['#3d6cb9', '#0b8457', '#c03546'],
-      },
-    ],
-  };
-
-  const options = {
-    title: {
-      display: true,
-      text: 'Диаграмма страны',
-    },
-  };
-
-  // if (!currentCountry ) {
-  //   return (
-  //     <div className={classes.root}>
-  //       <Line data={globalData} />
-  //     </div>
-  //   );
-
-  return (
+  const LineChart = globalDailyData ? (
     <div className={classes.root}>
-      <Doughnut data={data} options={options} />
+      <Line
+        data={{
+          labels: globalDailyData && globalDailyData.map(({ date }) => date),
+          datasets: [
+            {
+              label: 'Подтверждено',
+              data:
+                globalDailyData &&
+                globalDailyData.map(({ confirmed }) => confirmed),
+              backgroundColor: 'rgba(61, 108, 185, 0.2)',
+              borderColor: 'rgba(0, 0, 0, 0.5)',
+              pointBackgroundColor: 'white',
+            },
+            {
+              label: 'Летальных исхожов',
+              data:
+                globalDailyData && globalDailyData.map(({ deaths }) => deaths),
+              backgroundColor: 'rgba(199, 00, 00, 1)',
+              borderColor: 'rgba(0, 0, 0, 0.5)',
+              pointBackgroundColor: 'white',
+            },
+          ],
+        }}
+        options={globalOptions}
+      />
     </div>
-  );
+  ) : null;
+
+  const Chart = currentCountry ? (
+    <div className={classes.root}>
+      <Doughnut
+        data={{
+          labels: ['Подтверждено', 'Выздоровело', 'Летальные исходы'],
+          datasets: [
+            {
+              label: 'On today',
+              data: [
+                currentCountry.confirmed.value,
+                currentCountry.recovered.value,
+                currentCountry.deaths.value,
+              ],
+              backgroundColor: ['#3d6cb9', '#0b8457', '#c03546'],
+            },
+          ],
+        }}
+        options={options}
+      />
+    </div>
+  ) : null;
+
+  return <>{currentCountry ? Chart : LineChart}</>;
 };
 
 export default Chart;

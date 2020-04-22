@@ -25,6 +25,7 @@ export default (state, action) => {
       return {
         ...state,
         globalDailyData: action.payload,
+        currentCountry: null,
         loading: false,
         isChosen: false,
       };

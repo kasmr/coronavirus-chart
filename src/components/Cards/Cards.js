@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import CountUp from 'react-countup';
 import { GlobalContext } from '../../context/GlobalState';
+import Loader from '../Loader/Loader';
 
 const Cards = () => {
   const classes = useStyles();
@@ -24,7 +25,7 @@ const Cards = () => {
   }, []);
 
   if (!confirmed || loading) {
-    return 'Загрузка...';
+    return <Loader />;
   }
 
   if (isChosen) {
