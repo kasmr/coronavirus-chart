@@ -4,7 +4,8 @@ import axios from 'axios';
 
 const initialState = {
   data: [],
-  countries: [],
+  countries: null,
+  loading: false,
 };
 
 //Context
@@ -18,9 +19,17 @@ export const GlobalProvider = ({ children }) => {
 
   //Actions
 
+  //Set loading
+
+  const setLoading = () => {
+    dispatch({ type: 'SET_LOADING' });
+  };
+
   //Fetching data
 
   const fetchData = async () => {
+    setLoading();
+
     const {
       data: { confirmed, recovered, deaths, lastUpdate },
     } = await axios.get(url);
@@ -34,17 +43,21 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchCountries = async () => {
     const {
-      data: { confirmed, recovered, deaths, lastUpdate },
-    } = await axios.get(url);
+      data: { countries },
+    } = await axios.get(`${url}/countries`);
 
-    const destructuredData = { confirmed, recovered, deaths, lastUpdate };
+    dispatch({ type: 'GET_COUNTRIES', payload: countries });
   };
 
   return (
     <GlobalContext.Provider
       value={{
         data: state.data,
+        loading: state.loading,
+        countries: state.countries,
         fetchData,
+        fetchCountries,
+        setLoading,
       }}
     >
       {children}

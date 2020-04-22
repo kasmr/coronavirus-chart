@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { GlobalContext } from '../../context/GlobalState';
+import { NativeSelect } from '@material-ui/core';
 
 const Picker = () => {
-  useEffect(() => {
-    fetchCountry;
-  }, [input]);
-
   const classes = useStyles();
+  const { countries, fetchCountries } = useContext(GlobalContext);
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
   const [country, setCountry] = useState('');
 
   const handleChange = (event) => {
@@ -20,10 +22,15 @@ const Picker = () => {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id='demo-simple-select-label'>Age</InputLabel>
-        <Select value={country} onChange={handleChange}>
-          <MenuItem value='gloabl'>global</MenuItem>
-        </Select>
+        <InputLabel shrink>Страна</InputLabel>
+        <NativeSelect value={country} onChange={handleChange}>
+          {countries &&
+            countries.map((item) => (
+              <option key={item.name} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+        </NativeSelect>
       </FormControl>
     </div>
   );
@@ -33,7 +40,9 @@ export default Picker;
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    display: 'flex',
+    width: 300,
+    margin: '1rem auto',
     minWidth: 120,
   },
   selectEmpty: {

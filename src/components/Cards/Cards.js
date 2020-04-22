@@ -12,6 +12,7 @@ const Cards = () => {
 
   const {
     fetchData,
+    loading,
     data: { confirmed, recovered, deaths, lastUpdate },
   } = useContext(GlobalContext);
 
@@ -20,7 +21,7 @@ const Cards = () => {
     //eslint-disable-next-line
   }, []);
 
-  if (!confirmed) {
+  if (!confirmed || loading) {
     return 'Загрузка...';
   }
 
