@@ -8,12 +8,11 @@ import { NativeSelect } from '@material-ui/core';
 const Picker = () => {
   const classes = useStyles();
   const { countries, fetchCountries } = useContext(GlobalContext);
+  const [country, setCountry] = useState('');
 
   useEffect(() => {
     fetchCountries();
-  }, []);
-
-  const [country, setCountry] = useState('');
+  }, [country]);
 
   const handleChange = (event) => {
     setCountry(event.target.value);
