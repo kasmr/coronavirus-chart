@@ -7,14 +7,22 @@ import { NativeSelect } from '@material-ui/core';
 
 const Picker = () => {
   const classes = useStyles();
-  const { countries, fetchCountries, fetchCountry } = useContext(GlobalContext);
-  const [country, setCountry] = useState('');
+  const {
+    countries,
+    fetchCountries,
+    fetchCountry,
+    fetchGlobalDailyData,
+  } = useContext(GlobalContext);
+  const [country, setCountry] = useState('Global');
 
   useEffect(() => {
     fetchCountries();
-    if (country) {
+    if (country === 'Global') {
+      fetchGlobalDailyData();
+    } else if (country !== 'Global') {
       fetchCountry(country);
     }
+
     //eslint-disable-next-line
   }, [country]);
 
@@ -27,7 +35,7 @@ const Picker = () => {
       <FormControl className={classes.formControl}>
         <InputLabel shrink>Страна</InputLabel>
         <NativeSelect value={country} onChange={handleChange}>
-          <option>Global</option>
+          <option value='Global'>Global (In the whole World)</option>
           {countries &&
             countries.map((item) => (
               <option key={item.name} value={item.iso3}>

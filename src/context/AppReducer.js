@@ -12,6 +12,7 @@ export default (state, action) => {
         ...state,
         countries: action.payload,
         loading: false,
+        isChosen: false,
       };
     case 'GET_COUNTRY':
       return {
@@ -19,6 +20,13 @@ export default (state, action) => {
         currentCountry: action.payload,
         loading: false,
         isChosen: true,
+      };
+    case 'GET_GLOBAL_DAILY_DATA':
+      return {
+        ...state,
+        globalDailyData: action.payload,
+        loading: false,
+        isChosen: false,
       };
     case 'SET_LOADING':
       return {

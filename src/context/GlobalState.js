@@ -2,10 +2,13 @@ import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
 import axios from 'axios';
 
+//Stata
+
 const initialState = {
   data: [],
   countries: null,
   currentCountry: null,
+  globalDailyData: null,
   isChosen: false,
   loading: false,
 };
@@ -59,6 +62,20 @@ export const GlobalProvider = ({ children }) => {
     dispatch({ type: 'GET_COUNTRY', payload: data });
   };
 
+  //Fetch dayly global data
+
+  const fetchGlobalDailyData = async () => {
+    const { data } = await axios.get(`${url}/daily`);
+
+    const modifiedData = data.map((dailyData) => ({
+      confirmed: dailyData.confirmed.total,
+      deaths: dailyData.deaths.total,
+      date: dailyData.reportDate,
+    }));
+
+    dispatch({ type: 'GET_GLOBAL_DAILY_DATA', payload: modifiedData });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -67,10 +84,12 @@ export const GlobalProvider = ({ children }) => {
         countries: state.countries,
         currentCountry: state.currentCountry,
         isChosen: state.isChosen,
+        globalDailyData: state.globalDailyData,
         fetchData,
         fetchCountries,
         setLoading,
         fetchCountry,
+        fetchGlobalDailyData,
       }}
     >
       {children}

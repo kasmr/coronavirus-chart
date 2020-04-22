@@ -91,7 +91,7 @@ const Cards = () => {
               {new Date(lastUpdate).toDateString()}
             </Typography>
             <Typography variant='body2' component='p'>
-              Количество летальных исходов из-за Коронавируса
+              Количество летальных исходов, причина которых - Коронавирус
             </Typography>
           </CardContent>
         </Card>
@@ -159,7 +159,7 @@ const Cards = () => {
               {new Date(lastUpdate).toDateString()}
             </Typography>
             <Typography variant='body2' component='p'>
-              Количество летальных исходов из-за Коронавируса
+              Количество летальных исходов, причина которых - Коронавирус
             </Typography>
           </CardContent>
         </Card>

@@ -1,15 +1,50 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Line } from 'react-chartjs-2';
 import { GlobalContext } from '../../context/GlobalState';
 
 const Chart = () => {
   const classes = useStyles();
 
-  const { currentCountry } = useContext(GlobalContext);
+  const { currentCountry, isChosen, globalDailyData } = useContext(
+    GlobalContext
+  );
 
-  if (!currentCountry) {
-    return 'Загрузка...';
+  const globalData = {
+    labels: globalDailyData && globalDailyData.map(({ date }) => date),
+    datasets: [
+      {
+        label: 'Подтверждено',
+        data:
+          globalDailyData && globalDailyData.map(({ confirmed }) => confirmed),
+        backgroundColor: 'rgba(61, 108, 185, 0.2)',
+        borderColor: 'rgba(0, 0, 0, 0.5)',
+        pointBackgroundColor: 'white',
+      },
+      {
+        label: 'Летальных исхожов',
+        data: globalDailyData && globalDailyData.map(({ deaths }) => deaths),
+        backgroundColor: 'rgba(199, 00, 00, 1)',
+        borderColor: 'rgba(0, 0, 0, 0.5)',
+        pointBackgroundColor: 'white',
+      },
+    ],
+  };
+
+  const globalOptions = {
+    title: {
+      display: true,
+      text:
+        'График ежедневного изменения числа подтвержденых и летальных случаев Коронавируса',
+    },
+  };
+
+  if (!currentCountry || !isChosen) {
+    return (
+      <div className={classes.root}>
+        <Line data={globalData} options={globalOptions} />
+      </div>
+    );
   }
 
   const { confirmed, deaths, recovered } = currentCountry;
@@ -31,6 +66,13 @@ const Chart = () => {
       text: 'Диаграмма страны',
     },
   };
+
+  // if (!currentCountry ) {
+  //   return (
+  //     <div className={classes.root}>
+  //       <Line data={globalData} />
+  //     </div>
+  //   );
 
   return (
     <div className={classes.root}>
