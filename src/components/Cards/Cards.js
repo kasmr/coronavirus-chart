@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import CountUp from 'react-countup';
+import { GlobalContext } from '../../context/GlobalState';
 
-const Cards = ({ state }) => {
+const Cards = () => {
   const classes = useStyles();
-  if (!state) {
+
+  const {
+    fetchData,
+    data: { confirmed, recovered, deaths, lastUpdate },
+  } = useContext(GlobalContext);
+
+  useEffect(() => {
+    fetchData();
+    //eslint-disable-next-line
+  }, []);
+
+  if (!confirmed) {
     return 'Загрузка...';
   }
-
-  const { confirmed, recovered, deaths, lastUpdate } = state;
 
   return (
     <div className={classes.container}>
