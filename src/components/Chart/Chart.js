@@ -38,7 +38,7 @@ const Chart = () => {
               pointBackgroundColor: 'white',
             },
             {
-              label: 'Летальных исхожов',
+              label: 'Летальных исходов',
               data:
                 globalDailyData && globalDailyData.map(({ deaths }) => deaths),
               backgroundColor: 'rgba(199, 00, 00, 1)',
