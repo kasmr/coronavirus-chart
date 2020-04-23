@@ -18,8 +18,7 @@ const Chart = () => {
   const globalOptions = {
     title: {
       display: true,
-      text:
-        'График ежедневного изменения числа подтвержденых и летальных случаев Коронавируса',
+      text: 'График ежедневного изменения числа случаев Коронавируса',
     },
   };
 
@@ -89,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
       width: 800,
     },
     [theme.breakpoints.down('sm')]: {
-      width: 380,
+      width: 340,
     },
   },
 }));
