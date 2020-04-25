@@ -176,6 +176,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
+    boxSizing: 'content-box',
   },
   root: {
     minWidth: 275,

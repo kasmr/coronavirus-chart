@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '3rem',
     marginTop: '1rem',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
+      fontSize: '1.1rem',
       textAlign: 'center',
     },
   },
