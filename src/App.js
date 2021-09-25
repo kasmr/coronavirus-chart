@@ -13,7 +13,7 @@ import Brightness4OutlinedIcon from '@material-ui/icons/Brightness4Outlined';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const darkTheme = createMuiTheme({
     palette: {
