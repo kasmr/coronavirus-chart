@@ -22,11 +22,13 @@ const Chart = () => {
     },
   };
 
+  const newDate = globalDailyData?.map(({ date }) => date.slice(0, 7));
+
   const LineChart = globalDailyData ? (
     <div className={classes.root}>
       <Line
         data={{
-          labels: globalDailyData && globalDailyData.map(({ date }) => date),
+          labels: newDate,
           datasets: [
             {
               label: 'Подтверждено',
