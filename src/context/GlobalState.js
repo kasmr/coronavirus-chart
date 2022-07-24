@@ -1,95 +1,90 @@
 import React, { createContext, useReducer } from 'react';
-import AppReducer from './AppReducer';
+
 import axios from 'axios';
 
-//Stata
+import AppReducer from './AppReducer';
 
-const initialState = {
-  data: [],
-  countries: null,
-  currentCountry: null,
-  globalDailyData: null,
-  loading: false,
+
+const State = {
+    globalData: [],
+    countries: null,
+    currentCountry: null,
+    globalDailyData: null,
+    loading: false,
+    theme: 'light',
 };
 
-//Context
 
-export const GlobalContext = createContext(initialState);
+export const GlobalContext = createContext(State);
 
 export const GlobalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [ {
+        theme,
+        loading,
+        countries,
+        globalData,
+        currentCountry,
+        globalDailyData,
+    }, dispatch ] = useReducer(AppReducer, State);
 
-  const url = 'https://covid19.mathdro.id/api';
+    const apiEndpoint = 'https://covid19.mathdro.id/api';
 
-  //Actions
+    const switchThemeType = () => dispatch({
+        type: 'SWITCH_THEME',
+        payload: theme === 'light' ? 'dark' : 'light',
+    });
 
-  //Set loading
+    const setLoading = () => dispatch({ type: 'SET_LOADING' });
 
-  const setLoading = () => {
-    dispatch({ type: 'SET_LOADING' });
-  };
+    const fetchData = async () => {
+        setLoading();
 
-  //Fetching data
+        const { data: payload } = await axios.get(apiEndpoint);
 
-  const fetchData = async () => {
-    setLoading();
-    const {
-      data: { confirmed, recovered, deaths, lastUpdate },
-    } = await axios.get(url);
+        dispatch({ type: 'GET_DATA', payload });
+    };
 
-    const destructuredData = { confirmed, recovered, deaths, lastUpdate };
+    const fetchCountries = async () => {
+        const { data: { countries } } = await axios.get(`${apiEndpoint}/countries`);
 
-    dispatch({ type: 'GET_DATA', payload: destructuredData });
-  };
+        dispatch({ type: 'GET_COUNTRIES', payload: countries });
+    };
 
-  //Fetching countries
+    const fetchCountry = async (country) => {
+        const { data } = await axios.get(`${apiEndpoint}/countries/${country}`);
 
-  const fetchCountries = async () => {
-    const {
-      data: { countries },
-    } = await axios.get(`${url}/countries`);
+        dispatch({ type: 'GET_COUNTRY', payload: data });
+    };
 
-    dispatch({ type: 'GET_COUNTRIES', payload: countries });
-  };
+    const fetchGlobalDailyData = async () => {
+        const { data } = await axios.get(`${apiEndpoint}/daily`);
 
-  //Fetching current country
+        const payload = data.map(({ totalConfirmed, deaths, reportDate }) => ({
+            confirmed: totalConfirmed,
+            deaths: deaths.total,
+            date: reportDate,
+        }));
 
-  const fetchCountry = async (country) => {
-    const { data } = await axios.get(`${url}/countries/${country}`);
+        dispatch({ type: 'GET_GLOBAL_DAILY_DATA', payload });
+    };
 
-    dispatch({ type: 'GET_COUNTRY', payload: data });
-  };
+    return (
+        <GlobalContext.Provider value={{
+            theme,
+            loading,
+            countries,
+            globalData,
+            currentCountry,
+            globalDailyData,
+            fetchData,
+            setLoading,
+            fetchCountry,
+            fetchCountries,
+            switchThemeType,
+            fetchGlobalDailyData,
+        }}>
+            {children}
+        </GlobalContext.Provider>
 
-  //Fetch dayly global data
-
-  const fetchGlobalDailyData = async () => {
-    const { data } = await axios.get(`${url}/daily`);
-
-    const modifiedData = data.map((dailyData) => ({
-      confirmed: dailyData.confirmed.total,
-      deaths: dailyData.deaths.total,
-      date: dailyData.reportDate,
-    }));
-
-    dispatch({ type: 'GET_GLOBAL_DAILY_DATA', payload: modifiedData });
-  };
-
-  return (
-    <GlobalContext.Provider
-      value={{
-        data: state.data,
-        loading: state.loading,
-        countries: state.countries,
-        currentCountry: state.currentCountry,
-        globalDailyData: state.globalDailyData,
-        fetchData,
-        fetchCountries,
-        setLoading,
-        fetchCountry,
-        fetchGlobalDailyData,
-      }}
-    >
-      {children}
-    </GlobalContext.Provider>
-  );
+    );
 };
