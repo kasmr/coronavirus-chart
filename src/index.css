@@ -14,5 +14,5 @@ code {
 
 .switch {
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
 }
